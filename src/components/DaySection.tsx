@@ -1,9 +1,8 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Memory } from '../types';
 import PhotoGallery from './PhotoGallery';
 import { BsMusicNoteBeamed, BsMusicNote } from 'react-icons/bs';
-
 
 interface DaySectionProps {
   memory: Memory;
@@ -13,6 +12,18 @@ interface DaySectionProps {
 const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // Play audio on component mount if isActive is true
+  useEffect(() => {
+    if (isActive && audioRef.current) {
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(error => {
+        console.error('Autoplay failed:', error);
+        // Handle autoplay policy restrictions here
+      });
+    }
+  }, [isActive]);
 
   const toggleAudio = () => {
     if (!audioRef.current) return;

@@ -51,7 +51,8 @@ export const memories: Memory[] = [
       "https://i.ibb.co/SDy91ffF/image.png"
     ],
     mood: "Cozy & Intimate",
-    emojis: ["🌧️", "☕", "☂️", "🤗"]
+    emojis: ["🌧️", "☕", "☂️", "🤗"],
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
   },
   {
     id: 4,
