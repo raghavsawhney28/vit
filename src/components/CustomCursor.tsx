@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// import './CustomCursor.css'; // <- Import styles for shimmer
 
 type Particle = {
   id: number;
@@ -13,13 +14,11 @@ const CustomCursor: React.FC = () => {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [idCounter, setIdCounter] = useState(0);
 
-  // Cursor tracking
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       setMousePosition({ x: clientX, y: clientY });
 
-      // Add a heart particle
       const newParticle = {
         id: idCounter,
         x: clientX,
@@ -28,7 +27,6 @@ const CustomCursor: React.FC = () => {
       setParticles(prev => [...prev, newParticle]);
       setIdCounter(prev => prev + 1);
 
-      // Remove old particles
       setTimeout(() => {
         setParticles(prev => prev.filter(p => p.id !== newParticle.id));
       }, 500);
@@ -56,14 +54,14 @@ const CustomCursor: React.FC = () => {
     <>
       {/* Main Cursor */}
       <motion.div
-        className="fixed z-50 pointer-events-none"
+        className="fixed z-50 pointer-events-none shimmer-cursor"
         animate={{
           x: mousePosition.x - 20,
           y: mousePosition.y - 20,
           scale: isHovering ? 1.8 : 1,
           background: isHovering
-            ? 'radial-gradient(circle, #f472b6, #ec4899)'
-            : 'radial-gradient(circle, #f9a8d4, #f472b6)',
+            ? 'radial-gradient(circle, #1111fd, #e626e6)'
+            : 'radial-gradient(circle, #0b0bff, #f300f3)',
         }}
         transition={{
           type: 'spring',
@@ -74,9 +72,14 @@ const CustomCursor: React.FC = () => {
           width: 40,
           height: 40,
           borderRadius: '9999px',
-          mixBlendMode: 'difference',
-          boxShadow: '0 0 12px rgba(255, 0, 100, 0.4)',
+          mixBlendMode: 'screen',
+          boxShadow: `
+            0 0 8px rgba(230, 230, 250, 0.8),
+            0 0 16px rgba(216, 191, 216, 0.5),
+            0 0 24px rgba(200, 162, 200, 0.3)
+          `,
           opacity: 0.9,
+          backdropFilter: 'blur(2px)',
         }}
       />
 

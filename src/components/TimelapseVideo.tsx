@@ -1,80 +1,68 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import video from '../assets/video.mp4'; // Adjust the path as necessary
-// import './TimelapseVideo.css'; // If using CSS Modules or global styles
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-const TimelapseVideo = () => {
+interface TimelapseVideoProps {
+  videoUrl: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const TimelapseVideo: React.FC<TimelapseVideoProps> = ({
+  videoUrl,
+  title = 'Our Timelapse',
+  subtitle = 'Every step together, captured in time',
+}) => {
   const sectionRef = useRef(null);
-  const videoRef = useRef(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'], // Start when section enters viewport
+  });
 
-      const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      // Scroll progress (0 to 1)
-      const progress = Math.min(
-        Math.max((windowHeight - rect.top) / (rect.height + windowHeight), 0),
-        1
-      );
-
-      setScrollProgress(progress);
-
-      // Sync video playback with scroll
-      const video = videoRef.current;
-      if (video && video.duration) {
-        video.currentTime = progress * video.duration;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  // Animate from small top-left to full center
+  const scale = useTransform(scrollYProgress, [0, 0.4], [0.6, 1]);
+  const x = useTransform(scrollYProgress, [0, 0.2], ['-30%', '0%']);
+  const y = useTransform(scrollYProgress, [0, 0.2], ['-30%', '0%']);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0, 5]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative h-[200vh] bg-black flex items-center justify-center overflow-hidden"
+      className="relative h-[200vh] bg-black overflow-hidden flex items-center justify-center"
     >
-      {/* Zooming & Fading Video */}
-      <motion.video
-        ref={videoRef}
-        src={video}
-        className="absolute top-0 left-0 w-full h-full object-cover"
-        muted
-        playsInline
-        disablePictureInPicture
-        style={{
-          scale: 1 + scrollProgress * 0.3,
-          opacity: 0.5 + scrollProgress * 0.5,
-        }}
-      />
+      {/* Animated video container */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <motion.video
+          src={videoUrl}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover rounded-xl"
+          style={{
+            scale,
+            x,
+            y,
+            opacity,
+          }}
+        />
+        {/* Lavender Overlay */}
+        <div className="absolute inset-0 bg-purple-300 opacity-20 mix-blend-soft-light pointer-events-none" />
+      </div>
 
-      {/* Lavender Overlay */}
-      <div className="absolute inset-0 bg-purple-300 opacity-20 mix-blend-soft-light pointer-events-none" />
-
-      {/* Text Reveal */}
-      <div className="relative text-center z-10">
+      {/* Text content */}
+      <div className="relative z-10 text-center px-4">
         <motion.h2
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: scrollProgress, y: 50 - scrollProgress * 50 }}
-          className="text-lavender text-5xl font-bold"
+          style={{ opacity }}
+          className="text-white text-5xl font-bold"
         >
-          Our Timelapse
+          {title}
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: scrollProgress }}
-          className="text-lavender mt-4 text-xl"
+          style={{ opacity }}
+          className="text-white mt-4 text-xl"
         >
-          Making coffies, sharing laughs, and creating memories
+          {subtitle}
         </motion.p>
       </div>
     </section>

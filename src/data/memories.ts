@@ -40,8 +40,8 @@ export const memories: Memory[] = [
     day: 3,
     title: "Four Hours, A Lifetime of Us",
     subtitle: "Cuddles, coffee, and cozy moments",
-    story: "The rain tried to ruin our plans, but it only made our day more magical. We found shelter in a tiny café, sharing hot coffee and warm conversations. Under that umbrella, with raindrops dancing around us, I realized I never wanted this moment to end.",
-    backgroundImage: "https://i.ibb.co/Gfqs5DDz/image.png",
+    story: "The day, we spent four magical hours together at Park Inn Hotel — hours that felt like minutes in the warmth of our love. We laughed while making coffee side by side, stole glances and kisses, and in between all the giggles and romance, we found moments of quiet — like when we fell asleep in each other's arms for just five minutes, but it felt like home I kissed her forehead gently as she smiled with her eyes closed, and the love we shared in that room will stay with me forever. Her happiness, her laughter, and the way she melted into every kiss — especially the ones I left softly on her neck — are moments etched in my heart forever. 💜☕🛏️.",
+    backgroundImage: "https://i.ibb.co/Q7JgHydj/VID-20250728-103132-exported-13533-1.jpg",
     photos: [
       "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=800",
       "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=800",
