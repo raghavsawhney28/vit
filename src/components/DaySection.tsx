@@ -13,15 +13,19 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Play audio on component mount if isActive is true
   useEffect(() => {
     if (isActive && audioRef.current) {
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch(error => {
-        console.error('Autoplay failed:', error);
-        // Handle autoplay policy restrictions here
-      });
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsPlaying(true))
+          .catch(err => {
+            console.warn('Autoplay blocked:', err);
+          });
+      }
+    } else if (!isActive && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
     }
   }, [isActive]);
 
@@ -61,28 +65,43 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
       role="region"
       aria-label={`Memory section: ${memory.title}`}
     >
-      {/* 🎵 Hidden audio element */}
+      {/* 🎵 Audio */}
       <audio ref={audioRef} loop src={memory.audioUrl} />
 
-      {/* Background with diagonal clip (no blur) */}
-      <motion.div
-        className="absolute inset-0 z-[-1] overflow-hidden"
-        style={{
-          backgroundImage: `url(${memory.backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          clipPath: 'polygon(0 5%, 100% 0, 100% 95%, 0% 100%)',
-        }}
-        initial={{ scale: 1.1, opacity: 0.7 }}
-        animate={{ scale: isActive ? 1.4 : 1.7, opacity: 1 }}
-        transition={{ duration: 1.8, ease: 'easeInOut' }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-purple-500/20 shadow-inner shadow-pink-200/10" />
-      </motion.div>
+      {/* 🌌 3D Background with Perspective */}
+      <div className="absolute inset-0 perspective-[1000px] z-[-1]">
+        <motion.div
+          className="absolute inset-0 overflow-hidden"
+          style={{
+            backgroundImage: `url(${memory.backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            transformStyle: 'preserve-3d',
+          }}
+          initial={{
+            rotateY: 45,
+            rotateX: -10,
+            scale: 0.9,
+            opacity: 0,
+          }}
+          animate={{
+            rotateY: isActive ? 0 : 45,
+            rotateX: isActive ? 0 : -10,
+            scale: isActive ? 1.3 : 0.9,
+            opacity: isActive ? 1 : 0,
+          }}
+          transition={{
+            duration: 1.8,
+            ease: 'easeInOut',
+          }}
+        >
+          <div className="absolute inset-0 bg-black/30 backdrop-sm" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-purple-500/20" />
+        </motion.div>
+      </div>
 
-      {/* Floating emojis */}
+      {/* 🌀 Floating Emojis */}
       <div className="absolute inset-0 pointer-events-none">
         {memory.emojis.map((emoji, index) => (
           <motion.div
@@ -104,7 +123,7 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
         ))}
       </div>
 
-      {/* Music Toggle Button */}
+      {/* 🎵 Music Toggle Button */}
       <button
         onClick={toggleAudio}
         className="absolute top-6 right-6 z-20 bg-white/10 backdrop-blur-sm p-2 rounded-full text-white hover:bg-white/20 transition"
@@ -113,7 +132,7 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
         {isPlaying ? <BsMusicNoteBeamed size={24} /> : <BsMusicNote size={24} />}
       </button>
 
-      {/* Main Content */}
+      {/* 📜 Main Content */}
       <div className="relative z-10 text-center text-white max-w-6xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -168,11 +187,11 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
           </motion.div>
         </motion.div>
 
-        {/* 📸 Lazy Gallery */}
+        {/* 🖼 Photo Gallery */}
         <PhotoGallery photos={memory.photos} title={memory.title} />
       </div>
 
-      {/* Floating particles */}
+      {/* 🌟 Floating particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {particlePositions.map((pos, i) => (
           <motion.div
@@ -192,7 +211,7 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
         ))}
       </div>
 
-      {/* ↓ Scroll hint */}
+      {/* 🔽 Scroll Hint */}
       <motion.div
         className="absolute bottom-6 text-white text-2xl opacity-60"
         animate={{ y: [0, 10, 0] }}

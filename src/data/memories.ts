@@ -15,7 +15,9 @@ export const memories: Memory[] = [
       
     ],
     mood: "Excited & Nervous",
-    emojis: ["💖", "✈️", "🤗", "✨"]
+    emojis: ["💖", "✈️", "🤗", "✨"],
+    audioUrl: "https://dl.dropboxusercontent.com/scl/fi/ify4ar6sc4wffxepy2120/Copy-of-Our-Photos-AShamaluevMusic.mp3?rlkey=nyjyqnf7rus5145allbr8ot66"
+    
   },
   {
     id: 2,
@@ -68,7 +70,8 @@ export const memories: Memory[] = [
       "https://i.ibb.co/SwrLQnnY/IMG-20250728-WA0040-1.jpg"
     ],
     mood: "Joyful & Playful",
-    emojis: ["😂", "🍰", "💑", "🎉"]
+    emojis: ["😂", "🍰", "💑", "🎉"],
+    audioUrl: "https://dl.dropboxusercontent.com/scl/fi/g90gcytpz4iyd3zdasxav/love-360958.mp3?rlkey=6tyxneygu6lhpr52jozocju41"
   },
   {
     id: 5,
