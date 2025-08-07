@@ -26,12 +26,24 @@ const TimelapseVideo: React.FC<TimelapseVideoProps> = ({
     offset: ['start end', 'end start'],
   });
 
-  // Enhanced scroll-based animations
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1.1, 1, 0.9]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [15, 0, -10]);
-  const rotateY = useTransform(scrollYProgress, [0, 1], [-5, 5]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.7]);
-  const brightness = useTransform(scrollYProgress, [0, 0.5, 1], [0.7, 1.2, 0.8]);
+  // Advanced scroll-based animations
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [0.7, 1.2, 1.05, 1.1, 0.8]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [20, -5, 5, -15]);
+  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-8, 0, 8]);
+  const rotateZ = useTransform(scrollYProgress, [0, 1], [-2, 2]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0.5]);
+  const brightness = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 1.3, 1.1, 0.7]);
+  const contrast = useTransform(scrollYProgress, [0, 0.5, 1], [1.0, 1.4, 1.1]);
+  const saturation = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.5, 1.0]);
+  const hueRotate = useTransform(scrollYProgress, [0, 1], [0, 15]);
+  
+  // Parallax and depth effects
+  const videoY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  const videoScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.2, 1.0, 1.3]);
+  const perspective = useTransform(scrollYProgress, [0, 1], [800, 1200]);
+  
+  // Dynamic blur based on scroll speed
+  const blurAmount = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [3, 0, 0, 2]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!sectionRef.current) return;
@@ -65,15 +77,18 @@ const TimelapseVideo: React.FC<TimelapseVideoProps> = ({
           muted
           loop
           playsInline
-          className="w-full h-full object-cover rounded-lg sm:rounded-xl will-change-transform"
+          className="w-full h-[120%] object-cover rounded-lg sm:rounded-xl will-change-transform"
           style={{
             scale,
+            y: videoY,
             opacity,
             rotateX,
             rotateY,
+            rotateZ,
             x: smoothMouseX,
             y: smoothMouseY,
-            filter: `brightness(${brightness.get()}) contrast(1.1) saturate(1.2)`,
+            perspective: perspective,
+            filter: `brightness(${brightness.get()}) contrast(${contrast.get()}) saturate(${saturation.get()}) hue-rotate(${hueRotate.get()}deg) blur(${blurAmount.get()}px)`,
           }}
           transition={{
             type: "spring",
@@ -82,32 +97,50 @@ const TimelapseVideo: React.FC<TimelapseVideoProps> = ({
           }}
         />
         
-        {/* Dynamic cinematic overlays */}
+        {/* Enhanced dynamic cinematic overlays */}
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-transparent to-pink-500/30 mix-blend-soft-light pointer-events-none"
+          className="absolute inset-0 mix-blend-soft-light pointer-events-none"
           style={{
-            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.1, 0.4]),
+            background: `conic-gradient(from ${scrollYProgress.get() * 360}deg, rgba(147, 51, 234, 0.3) 0deg, transparent 120deg, rgba(236, 72, 153, 0.3) 240deg, rgba(147, 51, 234, 0.3) 360deg)`,
+            opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.4, 0.1, 0.2, 0.5]),
           }}
         />
         
-        {/* Film grain effect */}
+        {/* Enhanced film grain effect */}
         <motion.div
-          className="absolute inset-0 opacity-10 mix-blend-overlay pointer-events-none"
+          className="absolute inset-0 mix-blend-overlay pointer-events-none"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.05, 0.15, 0.08]),
           }}
           animate={{
-            opacity: [0.05, 0.15, 0.05],
+            opacity: [0.05, 0.2, 0.05],
+            scale: [1, 1.02, 1],
           }}
           transition={{
-            duration: 2,
+            duration: 3,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
         
-        {/* Cinematic vignette */}
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/40 pointer-events-none" />
+        {/* Enhanced cinematic vignette */}
+        <motion.div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.6) 100%)`,
+            opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.6, 0.8]),
+          }}
+        />
+        
+        {/* Scroll-based light streaks */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `linear-gradient(${scrollYProgress.get() * 180}deg, transparent 0%, rgba(255,255,255,0.1) 45%, transparent 50%, rgba(255,255,255,0.1) 55%, transparent 100%)`,
+            opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.3, 0.2, 0]),
+          }}
+        />
       </div>
 
       {/* Enhanced text content with cinematic effects */}
