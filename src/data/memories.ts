@@ -18,6 +18,9 @@ export const memories: Memory[] = [
     emojis: ["💖", "✈️", "🤗", "✨"],
     audioUrl: "https://dl.dropboxusercontent.com/scl/fi/ify4ar6sc4wffxepy2120/Copy-of-Our-Photos-AShamaluevMusic.mp3?rlkey=nyjyqnf7rus5145allbr8ot66"
     
+
+
+    
   },
   {
     id: 2,
@@ -35,7 +38,8 @@ export const memories: Memory[] = [
       "https://i.ibb.co/Gfqs5DDz/image.png"
     ],
     mood: "Passionate & Intimate 💞",
-    emojis: ["🌅", "🎬", "🎞️", "💕"]
+    emojis: ["🌅", "🎬", "🎞️", "💕"],
+    audioUrl: "https://dl.dropboxusercontent.com/scl/fi/m74h6nvroy1f66dqlkw86/emotional-pianosecret-love-252596.mp3?rlkey=51q6suyn4rbsxhotblqmi9ntj"
   },
   {
     id: 3,
@@ -54,7 +58,9 @@ export const memories: Memory[] = [
     ],
     mood: "Cozy & Intimate",
     emojis: ["🌧️", "☕", "☂️", "🤗"],
-    audioUrl: "https://dl.dropboxusercontent.com/scl/fi/ify4ar6sc4wffxepy2120/Copy-of-Our-Photos-AShamaluevMusic.mp3?rlkey=nyjyqnf7rus5145allbr8ot66"
+    audioUrl: "https://dl.dropboxusercontent.com/scl/fi/4cksa7cwwdw5pbkon187z/love-chamber-297978.mp3?rlkey=kge9np8ox8yj03u3a5cokzxpd"
+
+
   },
   {
     id: 4,
@@ -87,6 +93,8 @@ export const memories: Memory[] = [
       "https://i.ibb.co/N2FqcTxp/image.png"
     ],
     mood: "Bittersweet & Hopeful",
-    emojis: ["😢", "💞", "🌟", "🤞"]
+    emojis: ["😢", "💞", "🌟", "🤞"],
+    audioUrl: "https://dl.dropboxusercontent.com/scl/fi/q9p9pz8hl4ydt1vu0knga/forever-in-love-202610.mp3?rlkey=2v7783huhkxa4pi19m3prw7c8"
+
   }
 ];
