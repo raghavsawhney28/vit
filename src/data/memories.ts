@@ -52,7 +52,7 @@ export const memories: Memory[] = [
     ],
     mood: "Cozy & Intimate",
     emojis: ["🌧️", "☕", "☂️", "🤗"],
-    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    audioUrl: "https://docs.google.com/uc?export=open&id=1qa2ImzkCzR_oV2RrDvpoLU9WnRTHJvnv"
   },
   {
     id: 4,
