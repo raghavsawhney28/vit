@@ -10,7 +10,7 @@ interface EndingSectionProps {
 
 const EndingSection: React.FC<EndingSectionProps> = ({ onRelive }) => {
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-indigo-900 via-purple-900 to-pink-900 overflow-hidden px-4 sm:px-6">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-indigo-900 via-purple-900 to-pink-900 overflow-hidden">
       {/* 3D Starry background */}
       <div className="absolute inset-0">
         <Canvas>
@@ -20,7 +20,7 @@ const EndingSection: React.FC<EndingSectionProps> = ({ onRelive }) => {
 
       {/* Content */}
       <motion.div
-        className="relative z-10 text-center text-white max-w-4xl mx-auto w-full"
+        className="relative z-10 text-center text-white max-w-4xl mx-auto px-6"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
@@ -28,7 +28,7 @@ const EndingSection: React.FC<EndingSectionProps> = ({ onRelive }) => {
       >
         {/* Blooming heart animation */}
         <motion.div
-          className="mb-8 sm:mb-12"
+          className="mb-12"
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
           transition={{ duration: 1.5, type: "spring" }}
@@ -44,12 +44,12 @@ const EndingSection: React.FC<EndingSectionProps> = ({ onRelive }) => {
               repeat: Infinity,
             }}
           >
-            <Heart className="text-pink-400 mx-auto" size={80} fill="currentColor" />
+            <Heart className="text-pink-400 mx-auto" size={100} fill="currentColor" />
           </motion.div>
         </motion.div>
 
         <motion.h2 
-          className="text-2xl sm:text-4xl md:text-6xl font-bold mb-6 sm:mb-8 leading-relaxed px-2"
+          className="text-4xl md:text-6xl font-bold mb-8 leading-relaxed"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
@@ -60,7 +60,7 @@ const EndingSection: React.FC<EndingSectionProps> = ({ onRelive }) => {
         </motion.h2>
 
         <motion.p 
-          className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-12 opacity-80 font-light px-4"
+          className="text-xl md:text-2xl mb-12 opacity-80 font-light"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 0.8 }}
           transition={{ delay: 1, duration: 1 }}
@@ -71,7 +71,7 @@ const EndingSection: React.FC<EndingSectionProps> = ({ onRelive }) => {
 
         <motion.button
           onClick={onRelive}
-          className="interactive group bg-gradient-to-r from-pink-500 to-purple-500 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95"
+          className="interactive group bg-gradient-to-r from-pink-500 to-purple-500 text-white px-10 py-4 rounded-full text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.8 }}
@@ -80,7 +80,7 @@ const EndingSection: React.FC<EndingSectionProps> = ({ onRelive }) => {
           whileTap={{ scale: 0.95 }}
         >
           <span className="flex items-center space-x-2">
-            <RotateCcw className="group-hover:rotate-180 transition-transform duration-500" size={18} />
+            <RotateCcw className="group-hover:rotate-180 transition-transform duration-500" size={20} />
             <span>Relive Again</span>
           </span>
         </motion.button>
