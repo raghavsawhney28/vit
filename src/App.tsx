@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // import smoothscroll from 'smoothscroll-polyfill'; // Optional: uncomment if needed
+
 import Landing from './components/Landing';
 import DaySection from './components/DaySection';
 import Timeline from './components/Timeline';
@@ -9,8 +10,9 @@ import TimelapseVideo from './components/TimelapseVideo';
 import CustomCursor from './components/CustomCursor';
 import ParticleSystem from './components/ParticleSystem';
 import { memories } from './data/memories';
-import Video from './assets/video.mp4'; // Correct import
+import Video from './assets/video.mp4';
 import SphereScene from './components/IntractiveSphare';
+import Globe from './components/globe';
 
 function App() {
   const [showLanding, setShowLanding] = useState(true);
@@ -119,6 +121,9 @@ function App() {
               totalDays={memories.length}
               onDayClick={handleDayClick}
             />
+
+            {/* ✅ Globe only visible after journey starts */}
+            <Globe />
           </motion.div>
         )}
       </AnimatePresence>

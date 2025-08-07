@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// import './CustomCursor.css'; // <- Import styles for shimmer
 
 type Particle = {
   id: number;
@@ -12,20 +11,19 @@ const CustomCursor: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
-  const [idCounter, setIdCounter] = useState(0);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       setMousePosition({ x: clientX, y: clientY });
 
-      const newParticle = {
-        id: idCounter,
+      const newParticle: Particle = {
+        id: performance.now(), // ✅ unique id
         x: clientX,
         y: clientY,
       };
+
       setParticles(prev => [...prev, newParticle]);
-      setIdCounter(prev => prev + 1);
 
       setTimeout(() => {
         setParticles(prev => prev.filter(p => p.id !== newParticle.id));
@@ -48,7 +46,7 @@ const CustomCursor: React.FC = () => {
       window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [idCounter]);
+  }, []);
 
   return (
     <>
