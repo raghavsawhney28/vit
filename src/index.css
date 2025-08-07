@@ -45,6 +45,24 @@
   .rotate-y-12 {
     transform: rotateY(12deg);
   }
+  
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .cinematic-blur {
+    filter: blur(0.5px) brightness(1.1) contrast(1.05);
+  }
+  
+  .film-grain {
+    background-image: 
+      radial-gradient(circle at 20% 50%, transparent 20%, rgba(255,255,255,0.3) 21%, rgba(255,255,255,0.3) 34%, transparent 35%, transparent),
+      linear-gradient(75deg, transparent 24%, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,0.05) 75%, rgba(255,255,255,0.05) 76%, transparent 77%, transparent);
+  }
 }
 
 /* Custom scrollbar */
@@ -234,5 +252,14 @@ video:hover {
   video {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+  }
+  
+  /* Disable complex animations on mobile for performance */
+  .will-change-transform {
+    will-change: auto;
+  }
+  
+  .cinematic-blur {
+    filter: none;
   }
 }

@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { Memory } from '../types';
 import PhotoGallery from './PhotoGallery';
 import { BsMusicNoteBeamed, BsMusicNote } from 'react-icons/bs';
@@ -10,8 +10,28 @@ interface DaySectionProps {
 }
 
 const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
+  const sectionRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  // Smooth mouse tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothMouseX = useSpring(mouseX, { stiffness: 300, damping: 30 });
+  const smoothMouseY = useSpring(mouseY, { stiffness: 300, damping: 30 });
+
+  // Scroll-based animations
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const backgroundScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.2, 1, 1.1]);
+  const backgroundRotate = useTransform(scrollYProgress, [0, 1], [0, 2]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.7, 0.4, 0.4, 0.8]);
 
   useEffect(() => {
     if (isActive && audioRef.current) {
@@ -29,6 +49,41 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
     }
   }, [isActive]);
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!sectionRef.current) return;
+      
+      const rect = sectionRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      
+      setMousePosition({ x, y });
+      mouseX.set((x - 0.5) * 100);
+      mouseY.set((y - 0.5) * 100);
+    };
+
+    const handleMouseEnter = () => setIsHovering(true);
+    const handleMouseLeave = () => {
+      setIsHovering(false);
+      mouseX.set(0);
+      mouseY.set(0);
+    };
+
+    const section = sectionRef.current;
+    if (section) {
+      section.addEventListener('mousemove', handleMouseMove);
+      section.addEventListener('mouseenter', handleMouseEnter);
+      section.addEventListener('mouseleave', handleMouseLeave);
+    }
+
+    return () => {
+      if (section) {
+        section.removeEventListener('mousemove', handleMouseMove);
+        section.removeEventListener('mouseenter', handleMouseEnter);
+        section.removeEventListener('mouseleave', handleMouseLeave);
+      }
+    };
+  }, [mouseX, mouseY]);
   const toggleAudio = () => {
     if (!audioRef.current) return;
     if (isPlaying) {
@@ -61,6 +116,7 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
 
   return (
     <div
+      ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6"
       role="region"
       aria-label={`Memory section: ${memory.title}`}
@@ -68,37 +124,85 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
       {/* 🎵 Audio */}
       <audio ref={audioRef} loop src={memory.audioUrl} />
 
-      {/* 🌌 3D Background with Perspective */}
-      <div className="absolute inset-0 perspective-[1000px] z-[-1]">
+      {/* 🌌 Cinematic Background with Cursor Interaction */}
+      <div className="absolute inset-0 perspective-[1000px] z-[-1] overflow-hidden">
         <motion.div
-          className="absolute inset-0 overflow-hidden"
+          className="absolute inset-0 will-change-transform"
           style={{
             backgroundImage: `url(${memory.backgroundImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundAttachment: 'fixed',
             transformStyle: 'preserve-3d',
-          }}
-          initial={{
-            rotateY: 45,
-            rotateX: -10,
-            scale: 0.9,
-            opacity: 0,
+            y: backgroundY,
+            scale: backgroundScale,
+            rotate: backgroundRotate,
           }}
           animate={{
-            rotateY: isActive ? 0 : 45,
-            rotateX: isActive ? 0 : -10,
-            scale: isActive ? 1.3 : 0.9,
-            opacity: isActive ? 1 : 0,
+            x: smoothMouseX,
+            y: smoothMouseY,
+            rotateX: isHovering ? smoothMouseY.get() * 0.1 : 0,
+            rotateY: isHovering ? smoothMouseX.get() * 0.1 : 0,
           }}
           transition={{
-            duration: 1.8,
-            ease: 'easeInOut',
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
           }}
         >
-          <div className="absolute inset-0 bg-black/30 backdrop-sm" />
-          <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-purple-500/20" />
+          {/* Dynamic overlay that responds to cursor */}
+          <motion.div 
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            style={{ opacity: overlayOpacity }}
+          />
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-purple-500/20"
+            animate={{
+              background: isHovering 
+                ? `radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, rgba(236, 72, 153, 0.3) 0%, rgba(147, 51, 234, 0.2) 50%, transparent 70%)`
+                : 'linear-gradient(45deg, rgba(236, 72, 153, 0.2), rgba(147, 51, 234, 0.2))'
+            }}
+            transition={{ duration: 0.3 }}
+          />
+          
+          {/* Cinematic light rays */}
+          <motion.div
+            className="absolute inset-0 opacity-20"
+            style={{
+              background: `conic-gradient(from ${mousePosition.x * 360}deg at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, transparent 0deg, rgba(255, 255, 255, 0.1) 45deg, transparent 90deg, rgba(255, 255, 255, 0.1) 135deg, transparent 180deg)`,
+            }}
+            animate={{
+              opacity: isHovering ? 0.3 : 0.1,
+              rotate: isHovering ? mousePosition.x * 10 : 0,
+            }}
+            transition={{ duration: 0.5 }}
+          />
         </motion.div>
+        
+        {/* Floating light particles */}
+        <div className="absolute inset-0 pointer-events-none">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full"
+              style={{
+                left: `${20 + (i * 10)}%`,
+                top: `${30 + (i * 8)}%`,
+              }}
+              animate={{
+                x: isHovering ? (mousePosition.x - 0.5) * 50 : 0,
+                y: isHovering ? (mousePosition.y - 0.5) * 50 : 0,
+                opacity: [0.2, 0.8, 0.2],
+                scale: [0.5, 1.2, 0.5],
+              }}
+              transition={{
+                opacity: { duration: 2 + i * 0.5, repeat: Infinity },
+                scale: { duration: 2 + i * 0.5, repeat: Infinity },
+                x: { type: "spring", stiffness: 200, damping: 20 },
+                y: { type: "spring", stiffness: 200, damping: 20 },
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       {/* 🌀 Floating Emojis */}

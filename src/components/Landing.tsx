@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { Heart, Sparkles } from 'lucide-react';
 
 interface LandingProps {
@@ -7,8 +7,35 @@ interface LandingProps {
 }
 
 const Landing: React.FC<LandingProps> = ({ onStart }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothMouseX = useSpring(mouseX, { stiffness: 300, damping: 30 });
+  const smoothMouseY = useSpring(mouseY, { stiffness: 300, damping: 30 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    
+    mouseX.set((x - 0.5) * 50);
+    mouseY.set((y - 0.5) * 50);
+  };
+
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-pink-100 via-purple-50 to-lavender-100 px-4 sm:px-6">
+    <div 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-pink-100 via-purple-50 to-lavender-100 px-4 sm:px-6"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Dynamic background with cursor interaction */}
+      <motion.div
+        className="absolute inset-0 opacity-30"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, rgba(255, 182, 193, 0.3) 0%, transparent 50%)`,
+          x: smoothMouseX,
+          y: smoothMouseY,
+        }}
+      />
+      
       {/* Animated background hearts */}
       <div className="absolute inset-0 pointer-events-none">
         {Array.from({ length: 20 }).map((_, i) => (
@@ -23,9 +50,10 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
               y: [0, -50, 0],
               opacity: [0.2, 0.8, 0.2],
               scale: [0.8, 1.2, 0.8],
+              rotate: [0, 360],
             }}
             transition={{
-              duration: 6 + Math.random() * 4,
+              duration: 8 + Math.random() * 4,
               repeat: Infinity,
               delay: Math.random() * 4,
             }}
