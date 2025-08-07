@@ -1,6 +1,7 @@
 import {useEffect, React} from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { Heart, Sparkles } from 'lucide-react';
+import useTransfrom from 'react';
 
 interface LandingProps {
   onStart: () => void;
