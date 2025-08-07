@@ -68,15 +68,29 @@
 /* Swiper custom styles */
 .mySwiper {
   width: 100%;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+@media (min-width: 640px) {
+  .mySwiper {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
 }
 
 .mySwiper .swiper-slide {
   background-position: center;
   background-size: cover;
-  width: 300px;
-  height: 400px;
+  width: 250px;
+  height: 350px;
+}
+
+@media (min-width: 640px) {
+  .mySwiper .swiper-slide {
+    width: 300px;
+    height: 400px;
+  }
 }
 
 .mySwiper .swiper-pagination-bullet {
@@ -185,4 +199,40 @@ video:hover {
 
 .bg-romance {
   background: linear-gradient(135deg, #ffb6c1 0%, #e6e6fa 50%, #dda0dd 100%);
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  /* Reduce motion for better mobile performance */
+  .animate-float {
+    animation-duration: 8s;
+  }
+  
+  .animate-sparkle {
+    animation-duration: 4s;
+  }
+  
+  /* Better touch targets */
+  .interactive {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Optimize text rendering on mobile */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  /* Better video performance on mobile */
+  video {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
 }

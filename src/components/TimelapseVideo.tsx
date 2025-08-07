@@ -28,7 +28,7 @@ const TimelapseVideo: React.FC<TimelapseVideoProps> = ({
   return (
     <section
       ref={sectionRef}
-      className="relative h-[200vh] bg-black overflow-hidden flex items-center justify-center"
+      className="relative h-[150vh] sm:h-[200vh] bg-black overflow-hidden flex items-center justify-center px-4 sm:px-0"
     >
       {/* Animated video container */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -38,7 +38,7 @@ const TimelapseVideo: React.FC<TimelapseVideoProps> = ({
           muted
           loop
           playsInline
-          className="w-full h-full object-cover rounded-xl"
+          className="w-full h-full object-cover rounded-lg sm:rounded-xl"
           style={{
             scale,
             x,
@@ -51,16 +51,16 @@ const TimelapseVideo: React.FC<TimelapseVideoProps> = ({
       </div>
 
       {/* Text content */}
-      <div className="relative z-10 text-center px-4">
+      <div className="relative z-10 text-center w-full">
         <motion.h2
           style={{ opacity }}
-          className="text-white text-5xl font-bold"
+          className="text-white text-3xl sm:text-5xl font-bold leading-tight"
         >
           {title}
         </motion.h2>
         <motion.p
           style={{ opacity }}
-          className="text-white mt-4 text-xl"
+          className="text-white mt-3 sm:mt-4 text-lg sm:text-xl"
         >
           {subtitle}
         </motion.p>

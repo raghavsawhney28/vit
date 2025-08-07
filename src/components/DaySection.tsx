@@ -61,7 +61,7 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6"
       role="region"
       aria-label={`Memory section: ${memory.title}`}
     >
@@ -106,7 +106,7 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
         {memory.emojis.map((emoji, index) => (
           <motion.div
             key={index}
-            className="absolute text-3xl md:text-4xl"
+            className="absolute text-2xl sm:text-3xl md:text-4xl"
             style={emojiPositions[index]}
             animate={{
               y: [0, -20, 0],
@@ -126,29 +126,29 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
       {/* 🎵 Music Toggle Button */}
       <button
         onClick={toggleAudio}
-        className="absolute top-6 right-6 z-20 bg-white/10 backdrop-blur-sm p-2 rounded-full text-white hover:bg-white/20 transition"
+        className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 bg-white/10 backdrop-blur-sm p-2 sm:p-3 rounded-full text-white hover:bg-white/20 transition active:scale-95"
         aria-label="Toggle music"
       >
-        {isPlaying ? <BsMusicNoteBeamed size={24} /> : <BsMusicNote size={24} />}
+        {isPlaying ? <BsMusicNoteBeamed size={20} /> : <BsMusicNote size={20} />}
       </button>
 
       {/* 📜 Main Content */}
-      <div className="relative z-10 text-center text-white max-w-6xl mx-auto px-6">
+      <div className="relative z-10 text-center text-white max-w-6xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
           {memory.date && (
-            <p className="text-sm text-pink-100 mb-2 opacity-80">
+            <p className="text-xs sm:text-sm text-pink-100 mb-2 opacity-80">
               {new Date(memory.date).toLocaleDateString()}
             </p>
           )}
 
           <motion.h2
-            className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-pink-300 via-purple-300 to-pink-300 bg-clip-text text-transparent"
+            className="text-3xl sm:text-5xl md:text-7xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-pink-300 via-purple-300 to-pink-300 bg-clip-text text-transparent leading-tight"
             initial={{ scale: 0.8 }}
             whileInView={{ scale: 1 }}
             transition={{ duration: 0.8 }}
@@ -158,7 +158,7 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
           </motion.h2>
 
           <motion.p
-            className="text-xl md:text-3xl font-light opacity-90 mb-6 font-handwriting"
+            className="text-lg sm:text-xl md:text-3xl font-light opacity-90 mb-4 sm:mb-6 font-handwriting leading-relaxed"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 0.9 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -168,19 +168,19 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
           </motion.p>
 
           <motion.div
-            className="max-w-2xl mx-auto"
+            className="max-w-2xl mx-auto px-2 sm:px-0"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <p className="text-md md:text-xl leading-relaxed mb-6 font-light">
+            <p className="text-sm sm:text-base md:text-xl leading-relaxed mb-4 sm:mb-6 font-light">
               {memory.story}
             </p>
 
-            <div className="flex items-center justify-center space-x-4 mb-8">
-              <span className="text-sm opacity-75">Mood:</span>
-              <span className="px-4 py-2 bg-white/10 rounded-full text-sm backdrop-blur-sm border border-white/20">
+            <div className="flex items-center justify-center space-x-3 sm:space-x-4 mb-6 sm:mb-8">
+              <span className="text-xs sm:text-sm opacity-75">Mood:</span>
+              <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 rounded-full text-xs sm:text-sm backdrop-blur-sm border border-white/20">
                 {memory.mood}
               </span>
             </div>
@@ -213,7 +213,7 @@ const DaySection: React.FC<DaySectionProps> = ({ memory, isActive }) => {
 
       {/* 🔽 Scroll Hint */}
       <motion.div
-        className="absolute bottom-6 text-white text-2xl opacity-60"
+        className="absolute bottom-4 sm:bottom-6 text-white text-xl sm:text-2xl opacity-60"
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
       >

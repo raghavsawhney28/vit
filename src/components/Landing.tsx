@@ -8,7 +8,7 @@ interface LandingProps {
 
 const Landing: React.FC<LandingProps> = ({ onStart }) => {
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-pink-100 via-purple-50 to-lavender-100">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-pink-100 via-purple-50 to-lavender-100 px-4 sm:px-6">
       {/* Animated background hearts */}
       <div className="absolute inset-0 pointer-events-none">
         {Array.from({ length: 20 }).map((_, i) => (
@@ -30,14 +30,14 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
               delay: Math.random() * 4,
             }}
           >
-            <Heart className="text-pink-300" size={16 + Math.random() * 16} />
+            <Heart className="text-pink-300" size={Math.max(12, 16 + Math.random() * 16)} />
           </motion.div>
         ))}
       </div>
 
       {/* Main content */}
       <motion.div
-        className="text-center z-10 max-w-4xl mx-auto px-6"
+        className="text-center z-10 max-w-4xl mx-auto w-full"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
@@ -47,11 +47,11 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
           animate={{ rotate: [0, 5, -5, 0] }}
           transition={{ duration: 4, repeat: Infinity }}
         >
-          <Heart className="text-pink-400 mx-auto mb-6" size={80} />
+          <Heart className="text-pink-400 mx-auto mb-4 sm:mb-6" size={60} />
         </motion.div>
 
         <motion.h1 
-          className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"
+          className="text-4xl sm:text-6xl md:text-8xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 bg-clip-text text-transparent leading-tight"
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.8 }}
@@ -60,7 +60,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
         </motion.h1>
 
         <motion.p 
-          className="text-2xl md:text-3xl text-gray-600 mb-8 font-light font-handwriting"
+          className="text-xl sm:text-2xl md:text-3xl text-gray-600 mb-6 sm:mb-8 font-light font-handwriting"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
@@ -69,7 +69,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
         </motion.p>
 
         <motion.p 
-          className="text-lg md:text-xl text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed"
+          className="text-base sm:text-lg md:text-xl text-gray-500 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.8 }}
@@ -80,7 +80,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
 
         <motion.button
           onClick={onStart}
-          className="interactive group bg-gradient-to-r from-pink-400 to-purple-400 text-white px-12 py-4 rounded-full text-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          className="interactive group bg-gradient-to-r from-pink-400 to-purple-400 text-white px-8 sm:px-12 py-3 sm:py-4 rounded-full text-lg sm:text-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.8 }}
@@ -89,7 +89,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
         >
           <span className="flex items-center space-x-2">
             <span>Begin Our Journey</span>
-            <Sparkles className="group-hover:rotate-12 transition-transform duration-300" size={20} />
+            <Sparkles className="group-hover:rotate-12 transition-transform duration-300" size={18} />
           </span>
         </motion.button>
       </motion.div>
@@ -115,7 +115,7 @@ const Landing: React.FC<LandingProps> = ({ onStart }) => {
               delay: Math.random() * 4,
             }}
           >
-            <Sparkles className="text-purple-300" size={12 + Math.random() * 8} />
+            <Sparkles className="text-purple-300" size={Math.max(8, 12 + Math.random() * 8)} />
           </motion.div>
         ))}
       </div>

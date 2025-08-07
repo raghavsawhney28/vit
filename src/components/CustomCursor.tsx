@@ -10,24 +10,36 @@ type Particle = {
 const CustomCursor: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
+    // Check if device is mobile/touch device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const updateMousePosition = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       setMousePosition({ x: clientX, y: clientY });
 
-      const newParticle: Particle = {
-        id: performance.now(), // ✅ unique id
-        x: clientX,
-        y: clientY,
-      };
+      // Reduce particles on mobile for better performance
+      if (!isMobile || Math.random() > 0.7) {
+        const newParticle: Particle = {
+          id: performance.now(),
+          x: clientX,
+          y: clientY,
+        };
 
-      setParticles(prev => [...prev, newParticle]);
+        setParticles(prev => [...prev, newParticle]);
 
-      setTimeout(() => {
-        setParticles(prev => prev.filter(p => p.id !== newParticle.id));
-      }, 500);
+        setTimeout(() => {
+          setParticles(prev => prev.filter(p => p.id !== newParticle.id));
+        }, isMobile ? 300 : 500);
+      }
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -45,17 +57,23 @@ const CustomCursor: React.FC = () => {
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener('resize', checkMobile);
     };
-  }, []);
+  }, [isMobile]);
+
+  // Don't render cursor on mobile devices
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <>
       {/* Main Cursor */}
       <motion.div
-        className="fixed z-50 pointer-events-none shimmer-cursor"
+        className="fixed z-50 pointer-events-none shimmer-cursor hidden sm:block"
         animate={{
-          x: mousePosition.x - 20,
-          y: mousePosition.y - 20,
+          x: mousePosition.x - 15,
+          y: mousePosition.y - 15,
           scale: isHovering ? 1.8 : 1,
           background: isHovering
             ? 'radial-gradient(circle, #1111fd, #e626e6)'
@@ -67,8 +85,8 @@ const CustomCursor: React.FC = () => {
           damping: 28,
         }}
         style={{
-          width: 40,
-          height: 40,
+          width: 30,
+          height: 30,
           borderRadius: '9999px',
           mixBlendMode: 'screen',
           boxShadow: `
@@ -104,7 +122,7 @@ const CustomCursor: React.FC = () => {
               left: 0,
               top: 0,
               position: 'fixed',
-              fontSize: '14px',
+              fontSize: '12px',
               color: '#ec4899',
             }}
           >
